@@ -101,7 +101,10 @@ $('#leaveBtn').onclick = () => {
 
 // ---- rendering ---------------------------------------------------------
 
+let lastRenderMsg = null;
+
 function render(msg) {
+  lastRenderMsg = msg;
   last = msg.public;
   const pub = msg.public;
   const priv = msg.private;
@@ -135,12 +138,19 @@ function renderSeats(pub, priv) {
   const rot = mySeatIndex === -1 ? 0 : mySeatIndex;
   const view = ordered.slice(rot).concat(ordered.slice(0, rot));
 
+  // On narrow screens pull the ring inward horizontally and taller vertically so
+  // seats sit on the rim without clipping or overlapping the board/pot.
+  const mobile = window.innerWidth <= 620;
+  const rx = mobile ? 41 : 46; // horizontal radius (% of felt)
+  const ry = mobile ? 41 : 42; // vertical radius
+  const cy = mobile ? 48 : 52; // vertical center (lifted on mobile to clear the action bar)
+
   const n = view.length;
   view.forEach((p, i) => {
     // angle: index 0 at bottom (90deg), going clockwise.
     const angle = Math.PI / 2 + (i / n) * 2 * Math.PI;
-    const x = 50 + 46 * Math.cos(angle);
-    const y = 52 + 42 * Math.sin(angle);
+    const x = 50 + rx * Math.cos(angle);
+    const y = cy + ry * Math.sin(angle);
     const el = document.createElement('div');
     el.className = 'seat';
     el.style.left = x + '%';
@@ -309,6 +319,13 @@ function findIdx(pub, id) { return pub.players.findIndex((p) => p.id === id); }
 function setStatus(t) { const e = $('#statusMsg'); if (e) e.textContent = t; }
 function cap(s) { return s ? s[0].toUpperCase() + s.slice(1) : s; }
 function esc(s) { return String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+
+// Re-lay the table when the screen rotates or resizes (debounced).
+let resizeTimer = null;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => { if (lastRenderMsg) render(lastRenderMsg); }, 150);
+});
 
 // Auto-reconnect on load if we have a saved session.
 if (loadSession()) reconnect();
