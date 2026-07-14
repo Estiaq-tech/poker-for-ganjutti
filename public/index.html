@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>Poker for Ganjutti ♠</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Lobby -->
+  <div id="lobby" class="screen">
+    <div class="lobby-card">
+      <h1>♠ Poker for Ganjutti</h1>
+      <p class="tagline">Private Texas Hold'em with friends. Play chips in taka (৳) — just for fun.</p>
+
+      <label>Your nickname
+        <input id="nick" maxlength="16" placeholder="e.g. Swapth" />
+      </label>
+
+      <div class="lobby-actions">
+        <div class="panel">
+          <h3>Create a table</h3>
+          <label>Starting stack (৳)
+            <input id="startStack" type="number" value="1000" min="1" max="1000" />
+          </label>
+          <label>Blinds (small / big)
+            <span class="blinds">
+              <input id="sb" type="number" value="5" min="1" />
+              <span>/</span>
+              <input id="bb" type="number" value="10" min="2" />
+            </span>
+          </label>
+          <button id="createBtn" class="primary">Create table</button>
+        </div>
+
+        <div class="panel">
+          <h3>Join a table</h3>
+          <label>Table code
+            <input id="joinCode" maxlength="5" placeholder="ABC12" style="text-transform:uppercase" />
+          </label>
+          <button id="joinBtn" class="primary">Join table</button>
+        </div>
+      </div>
+      <p id="lobbyError" class="error"></p>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div id="game" class="screen hidden">
+    <header class="topbar">
+      <div class="table-info">
+        <span class="code-chip">Table <b id="tableCode"></b></span>
+        <button id="copyLink" class="ghost">Copy invite link</button>
+      </div>
+      <div class="table-meta">
+        <span id="blindInfo"></span>
+        <span id="handInfo"></span>
+      </div>
+      <div class="host-controls">
+        <button id="dealBtn" class="primary hidden">Deal next hand</button>
+        <button id="resetBtn" class="ghost hidden">New session</button>
+        <button id="leaveBtn" class="ghost">Leave</button>
+      </div>
+    </header>
+
+    <main class="table-wrap">
+      <div class="felt">
+        <div id="seats"></div>
+        <div class="center">
+          <div id="board" class="board"></div>
+          <div id="pot" class="pot"></div>
+          <div id="statusMsg" class="status-msg"></div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="actionbar">
+      <div id="actions" class="actions hidden">
+        <button data-act="fold" class="act fold">Fold</button>
+        <button data-act="check" class="act check">Check</button>
+        <button data-act="call" class="act call">Call</button>
+        <div class="raise-group">
+          <input id="raiseSlider" type="range" />
+          <div class="raise-line">
+            <button data-act="raise" class="act raise">Raise to <span id="raiseAmt"></span></button>
+            <button id="allInBtn" class="act allin">All-in</button>
+          </div>
+        </div>
+      </div>
+      <div id="waitMsg" class="wait-msg"></div>
+      <div id="log" class="log"></div>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

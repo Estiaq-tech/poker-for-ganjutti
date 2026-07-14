@@ -1,0 +1,11 @@
+# Render blueprint. When you connect this repo on render.com, Render reads this
+# file and provisions the service automatically — no manual field entry needed.
+services:
+  - type: web
+    name: poker-for-ganjutti
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /
+    autoDeploy: true

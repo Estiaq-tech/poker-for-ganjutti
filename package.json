@@ -1,0 +1,18 @@
+{
+  "name": "poker-for-ganjutti",
+  "version": "0.1.0",
+  "description": "Private Texas Hold'em with friends, play chips in Bangladeshi taka.",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node --test test/*.test.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "ws": "^8.18.0"
+  }
+}
